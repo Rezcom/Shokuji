@@ -1,0 +1,5 @@
+name: Shokuji
+version: ${project.version}
+main: me.rezcom.shokuji.Main
+api-version: 1.16
+depend: [ProtocolLib]

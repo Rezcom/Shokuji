@@ -1,0 +1,5 @@
+name: Shokuji
+version: 1.0-SNAPSHOT
+main: me.rezcom.shokuji.Main
+api-version: 1.16
+depend: [ProtocolLib]
