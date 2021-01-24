@@ -1,2 +1,6 @@
+me\rezcom\shokuji\EatEvent.class
+me\rezcom\shokuji\FoodDataHandler.class
+me\rezcom\shokuji\AntiSprintPacket.class
+me\rezcom\shokuji\FoodInfo.class
 me\rezcom\shokuji\Main.class
-me\rezcom\shokuji\foodDescriptionListener.class
+me\rezcom\shokuji\AntiSprintEvent.class

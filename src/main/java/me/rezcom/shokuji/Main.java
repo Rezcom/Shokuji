@@ -12,7 +12,12 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-        protocolManager.addPacketListener(new foodDescriptionListener(this, ListenerPriority.NORMAL, PacketType.Play.Server.SET_SLOT));
+        protocolManager.addPacketListener(new FoodDataHandler(this, ListenerPriority.NORMAL, PacketType.Play.Server.SET_SLOT));
+        //protocolManager.addPacketListener(new AntiSprintPacket(this, ListenerPriority.NORMAL, PacketType.Play.Client.ENTITY_ACTION));
+        FoodInfo.initialize();
+
+        getServer().getPluginManager().registerEvents(new EatEvent(), this);
+        getServer().getPluginManager().registerEvents(new AntiSprintEvent(), this);
     }
 
     @Override
