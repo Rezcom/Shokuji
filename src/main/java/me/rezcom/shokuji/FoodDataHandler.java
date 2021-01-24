@@ -27,26 +27,26 @@ public class FoodDataHandler extends PacketAdapter {
         // Listen for when a player holds a food item in their hand
         //System.out.println("SET SLOT");
         ItemStack item = packet.getItemModifier().read(0);
+        //System.out.println("Size: " + packet.getItemModifier().size());
+        //System.out.println("Getval: " + packet.getItemModifier().getValues());
+        setItemDesc(item);
 
-        if (item.getType() != Material.AIR){
-
-            // If the food is in the list of foods needing change...
-            if (FoodInfo.allMapsContain(item.getType())){
-                ItemMeta itemMeta = item.getItemMeta();
-                //System.out.println("IT'S IN THE FOODLIST");
-                if (itemMeta != null) {
-                    itemMeta.setLore(buildFoodLore(item.getType()));
-                    item.setItemMeta(itemMeta);
-                } else {
-                    // ItemMeta is null? What?
-                    System.out.println("OH GOD WE FUCKED UP BOYS");
-                }
-
+    }
+    // Sets a specific item's tags to the appropriate tags.
+    public static void setItemDesc(ItemStack item){
+        if (item != null && item.getType() != Material.AIR && FoodInfo.allMapsContain(item.getType())){
+            ItemMeta itemMeta = item.getItemMeta();
+            if (itemMeta != null) {
+                itemMeta.setLore(buildFoodLore(item.getType()));
+                item.setItemMeta(itemMeta);
+            } else {
+                // ItemMeta is null? What?
+                System.out.println("OH GOD WE FUCKED UP BOYS");
             }
         }
     }
 
-    private List<String> buildFoodLore(Material material){
+    private static List<String> buildFoodLore(Material material){
         // Builds the description for the food item, using
         // information from FoodInfo class.
         List<String> info = new ArrayList<>();
@@ -58,7 +58,7 @@ public class FoodDataHandler extends PacketAdapter {
         }
 
         // Saturation value
-        info.add("§bSaturation: " + FoodInfo.satMap.get(material));
+        info.add("§bSaturation: " + FoodInfo.satMap.get(material) + "§9(" + (FoodInfo.satMap.get(material) / FoodInfo.restoreMap.get(material)) + " Nourishment)");
         // Any side effects?
         info.add("\n");
         for (String s : FoodInfo.descMap.get(material)){

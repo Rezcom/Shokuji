@@ -29,7 +29,6 @@ public class AntiSprintPacket extends PacketAdapter {
         if (actions != null && potionEffect != null &&actions.getValues().contains(EnumWrappers.PlayerAction.START_SPRINTING)){
             // Player is sprinting with slow debuff!
             if (potionEffect.getAmplifier() == -2){
-                System.out.println("START SPRINTING WITH SLOW");
                 event.getPlayer().setVelocity(new Vector(0,0,0));
                 event.getPlayer().setSprinting(false);
             }

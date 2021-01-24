@@ -14,9 +14,8 @@ public class AntiSprintEvent implements Listener {
     void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         PotionEffect potionEffect = player.getPotionEffect(PotionEffectType.SPEED);
-        if (potionEffect != null && potionEffect.getAmplifier() == -2 && player.isSprinting()){
+        if (potionEffect != null && potionEffect.getAmplifier() == -1 && player.isSprinting()){
             player.setVelocity(new Vector(0, player.getVelocity().getY(), 0));
-            System.out.println("ANTISPRINT EVENT");
             //player.setSprinting(false);
         }
     }
