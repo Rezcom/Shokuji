@@ -11,7 +11,7 @@ public class InvOpenHandler implements Listener {
 
     @EventHandler
     void onPlayerOpenInv(PlayerLoginEvent event){
-        System.out.println("INVENTORY INTERACT");
+        //System.out.println("INVENTORY INTERACT");
         Player player = event.getPlayer();
         for (ItemStack item : player.getInventory().getContents()){
             FoodDataHandler.setItemDesc(item);

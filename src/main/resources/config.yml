@@ -1,0 +1,313 @@
+# Each Food item is of the format:
+#
+# food: <- Put all food items under this
+#
+#   CHICKEN: <- Use Spigot internal food name, all caps.
+#     restore: 2 <- How much Hunger a food restores.
+#     saturation: 0.7 <- Double of how much saturation it restores.
+#     description: <- Description of what each food does.
+#       - "Line1" <- Ensure each of these is a string surrounded by double quotes.
+#       - "Line2"
+#       - etc
+#     flair: <- Custom flair shown at bottom of the lore.
+#       - "Line1 of the flair."
+#       - "Line2"
+#       - etc
+#     effects: <- Each food can have MULTIPLE probability rolls.
+#
+#       A probability roll is a list of probabilities of effects. Whenever a food is eaten, the player receives ONE EFFECT
+#       FROM EACH probability roll. If the probabilities don't add up to 1.0, then there is a probability the player
+#       receives NO EFFECT from the roll. If they add up to more than 1.0, the food wont register.
+#
+#       custom_roll1: <- Name of probability roll. You can name this whatever you want.
+#         chickHeal: <-  Probability for A SINGLE effect. Name whatever you want.
+#           effect: HEAL <- Use Spigot naming convention for effect, in all caps.
+#           duration: 1 <- Duration in MINECRAFT TICKS of the effect. If set to -1, eating the food REMOVES the effect instead.
+#           amplifier: 0 <- How strong the effect is, starting at 0. Meaning, 0 is level ONE effect, 1 is level TWO effect, etc.
+#           probability: 0.5 <- Probability of this particular effect getting rolled from THIS probability roll.
+#         chickPoison:
+#           effect: POISON
+#           duration: 100
+#           amplifier: 0
+#           probability: 0.5
+#
+#       custom_roll2:
+#         chickSpeed:
+#           effect: SPEED
+#           duration: 120
+#           amplifier: 0
+#           probability: 0.2
+#         chickBlind:
+#           effect: BLINDNESS
+#           duration: 200
+#           amplifier: 0
+#           probability: 0.3
+#
+# The above config says the following:
+#
+# When eating a raw chicken, players will restore 2 hunger and 0.7 saturation.
+# They will have a 50% chance to get Instant Heal, but a 50% chance to get Poison for 5 seconds instead.
+#
+# Additionally, on top of the previous probabilities, they will have a 20% chance to get speed for 6 seconds,
+# but a 30% chance to get blindness for 10 seconds. The remaining 50% is chance for neither of these to happen.
+
+# When set to true, any player with the effect Speed of amplifier -1 will have sprinting negated to a crawl.
+enable-no-sprint: true
+
+food:
+
+  COOKED_PORKCHOP:
+    restore: 8
+    saturation: 8.4
+    description: # Each entry is a separate line. Ensure each is a string wrapped in double quotes.
+      - "Gives Instant Health."
+      - "5% Chance for Large Heal."
+      - "Disables Sprinting for a bit."
+      - "Just like the good old days!"
+    flair:
+      - "A classic delicacy."
+      - "Eating this makes you nostalgic."
+
+    effects: # All Probability Rolls; Players get (or don't get) an effect FROM EACH ONE
+      porkInstantHP: # A single probability roll, named whatever you want.
+        smallHeal: # Probability of a single effect in this roll; name whatever you want.
+          effect: HEAL
+          duration: 1
+          amplifier: 0
+          probability: 0.95
+        bigHeal:
+          effect: HEAL
+          duration: 1
+          amplifier: 2
+          probability: 0.05
+      porkSpeed:
+        noSprint:
+          effect: SPEED
+          duration: 260
+          amplifier: -1 # Speed of -1 amplifier has been reserved for activating "No Sprint"
+          probability: 1.0 # Set to 1 to always happen. You MUST have this even if the probability is 1.0
+
+  COOKED_BEEF:
+    restore: 6
+    saturation: 8.4
+    description:
+      - "Provides Resistance for a bit."
+    flair:
+      - "The quintessential choice of meat lovers."
+      - "Nobody can turn down a hearty steak!"
+    effects:
+      beefResist:
+        resist:
+          effect: DAMAGE_RESISTANCE
+          duration: 260
+          amplifier: 0
+          probability: 1.0
+
+  APPLE:
+    restore: 4
+    saturation: 2.8
+    description:
+      - "Cures several ailments."
+      - "(Nausea, Poison, Fatigue,"
+      - "Blindness, Wither)"
+      - "2.5% chance to Poison."
+    flair:
+      - "An apple a day"
+      - "keeps the status effects away!"
+    effects:
+      appleNausea:
+        cureNausea:
+          effect: CONFUSION
+          duration: -1
+          amplifier: 0
+          probability: 1.0
+      applePoison:
+        curePoison:
+          effect: POISON
+          duration: -1
+          amplifier: 0
+          probability: 0.975
+        givePoison:
+          effect: POISON
+          duration: 260
+          amplifier: 0
+          probability: 0.025
+      appleWither:
+        cureWither:
+          effect: WITHER
+          duration: -1
+          amplifier: 0
+          probability: 0.025
+      appleBlind:
+        cureBlind:
+          effect: BLINDNESS
+          duration: -1
+          amplifier: 0
+          probability: 1.0
+      appleFatigue:
+        cureFatigue:
+          effect: SLOW_DIGGING
+          duration: -1
+          amplifier: 0
+          probability: 1.0
+
+  BREAD:
+    restore: 5
+    saturation: 8.5
+    description:
+      - "Cures Hunger."
+      - "29% chance bonus Saturation."
+    flair:
+      - "Bread is a surefire way"
+      - "to keep your belly full!"
+    effects:
+      breadHunger:
+        cureHunger:
+          effect: HUNGER
+          duration: -1
+          amplifier: 0
+          probability: 1.0
+      breadBonusSat:
+        giveBonus:
+          effect: SATURATION
+          duration: 2
+          amplifier: 1
+          probability: 0.29
+
+  BEETROOT_SOUP:
+    restore: 6
+    saturation: 6.5
+    description:
+      - "Grants Strength for a bit."
+      - "12% chance for brief Regeneration."
+    flair:
+      - "One of the healthiest foods out there."
+      - "Deliciously aids in packing a punch."
+    effects:
+      beetrootStr:
+        giveStr:
+          effect: INCREASE_DAMAGE
+          duration: 260
+          amplifier: 0
+          probability: 1.0
+      beetrootRegen:
+        giveRegen:
+          effect: REGENERATION
+          duration: 190
+          amplifier: 1
+          probability: 0.12
+
+  BEEF: # Raw Beef
+    restore: 3
+    saturation: 1.8
+    description:
+      - "Gives Nausea."
+      - "5% chance to Poison."
+    flair:
+      - "Most people don't prefer"
+      - "steak THIS rare!"
+    effects:
+      beefNausea:
+        giveNaus:
+          effect: CONFUSION
+          duration: 260
+          amplifier: 0
+          probability: 1
+      beefPoison:
+        givePois:
+          effect: POISON
+          duration: 260
+          amplifier: 0
+          probability: 0.05
+
+  PORKCHOP: # Raw Pork
+    restore: 3
+    saturation: 1.8
+    description:
+      - "Gives Nausea."
+      - "11% chance to Poison."
+      - "Disables sprinting for a bit."
+      - "Just like the good old days!"
+    flair:
+      - "Not exactly the optimal,"
+      - "nostalgic nonetheless."
+    effects:
+      porkNausea:
+        giveNaus:
+          effect: CONFUSION
+          duration: 260
+          amplifier: 0
+          probability: 1
+      porkPoison:
+        givePois:
+          effect: POISON
+          duration: 260
+          amplifier: 0
+          probability: 0.11
+      porkSpeed:
+        noSprint:
+          effect: SPEED
+          duration: 260
+          amplifier: -1
+          probability: 1
+
+  CHICKEN: # Raw Chicken
+    restore: 2
+    saturation: 1.2
+    description:
+      - "Gives heavy Nausea."
+      - "77% chance to heavily Poison."
+    flair:
+      - "'Salmonella' isn't as delicious"
+      - "as it sounds."
+    effects:
+      chickNaus:
+        giveNaus:
+          effect: CONFUSION
+          duration: 260
+          amplifier: 1
+          probability: 1
+      chickPoison:
+        givePois:
+          effect: POISON
+          duration: 260
+          amplifier: 1
+          probability: 0.77
+
+  ROTTEN_FLESH:
+    restore: -2
+    saturation: 0.8
+    description:
+      - "Gives Nausea."
+      - "20% chance to Poison."
+      - "80% chance Hunger Debuff."
+    flair:
+      - "This is pretty disgusting."
+      - "But it serves as a good palette cleanser."
+    effects:
+      rotNaus:
+        giveNaus:
+          effect: CONFUSION
+          duration: 200
+          amplifier: 0
+          probability: 1
+      rotHunger:
+        giveHunger:
+          effect: HUNGER
+          duration: 600
+          amplifier: 0
+          probability: 0.8
+      rotPoison:
+        givePoison:
+          effect: POISON
+          duration: 260
+          amplifier: 0
+          probability: 0.2
+
+
+
+# Sends all probability rolls to the console. Don't touch if not debugging.
+debug-probability: false
+
+# Sends all config-loading debug prints to the console. Don't touch if not debugging.
+debug-config: false

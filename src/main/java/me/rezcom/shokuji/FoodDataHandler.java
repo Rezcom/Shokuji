@@ -10,9 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FoodDataHandler extends PacketAdapter {
 
     FoodDataHandler(Plugin plugin, ListenerPriority listenerPriority, PacketType packetType){
@@ -37,7 +34,7 @@ public class FoodDataHandler extends PacketAdapter {
         if (item != null && item.getType() != Material.AIR && FoodInfo.allMapsContain(item.getType())){
             ItemMeta itemMeta = item.getItemMeta();
             if (itemMeta != null) {
-                itemMeta.setLore(buildFoodLore(item.getType()));
+                itemMeta.setLore(FoodInfo.loreMap.get(item.getType()));
                 item.setItemMeta(itemMeta);
             } else {
                 // ItemMeta is null? What?
@@ -46,32 +43,6 @@ public class FoodDataHandler extends PacketAdapter {
         }
     }
 
-    private static List<String> buildFoodLore(Material material){
-        // Builds the description for the food item, using
-        // information from FoodInfo class.
-        List<String> info = new ArrayList<>();
-        // Restore value
-        if (FoodInfo.restoreMap.get(material) >= 0){
-            info.add("§aRestores " + FoodInfo.restoreMap.get(material) + " Hunger");
-        } else {
-            info.add("§cDepletes " + java.lang.Math.abs(FoodInfo.restoreMap.get(material)) + " Hunger");
-        }
 
-        // Saturation value
-        info.add("§bSaturation: " + FoodInfo.satMap.get(material) + "§9(" + (FoodInfo.satMap.get(material) / FoodInfo.restoreMap.get(material)) + " Nourishment)");
-        // Any side effects?
-        info.add("\n");
-        for (String s : FoodInfo.descMap.get(material)){
-            info.add("§e" + s);
-        }
-
-        // Build flair
-        info.add("\n");
-        for (String s : FoodInfo.flairMap.get(material)){
-            info.add("§3§o" + s);
-        }
-
-        return info;
-    }
 
 }

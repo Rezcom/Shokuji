@@ -10,11 +10,13 @@ import org.bukkit.util.Vector;
 
 public class AntiSprintEvent implements Listener {
 
+    public static boolean enabled = true;
+
     @EventHandler
     void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         PotionEffect potionEffect = player.getPotionEffect(PotionEffectType.SPEED);
-        if (potionEffect != null && potionEffect.getAmplifier() == -1 && player.isSprinting()){
+        if (enabled && potionEffect != null && potionEffect.getAmplifier() == -1 && player.isSprinting()){
             player.setVelocity(new Vector(0, player.getVelocity().getY(), 0));
             //player.setSprinting(false);
         }

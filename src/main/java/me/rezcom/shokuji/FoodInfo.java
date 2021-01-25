@@ -1,23 +1,24 @@
 package me.rezcom.shokuji;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.*;
 
 public class FoodInfo {
+
+    public static boolean debugConfig = false;
+
+    public static FileConfiguration fileConfig;
 
     // Stores all data for food and their lore
 
     // Modified restoration levels
     public static Map<Material, Integer> restoreMap = new HashMap<>();
-
-    // Short description of a side effect the food gives.
-    public static Map<Material, List<String>> descMap = new HashMap<>();
-
-    // Flair at the bottom of description.
-    public static Map<Material, List<String>> flairMap = new HashMap<>();
 
     // Saturation each item gives
     public static Map<Material, Float> satMap = new HashMap<>();
@@ -25,94 +26,106 @@ public class FoodInfo {
     // Effects that each foodstuff provides
     public static Map<Material, List<PotionProbList>> effectMap = new HashMap<>();
 
+    public static Map<Material, List<String>> loreMap = new HashMap<>();
+
     // Initialize all maps. Call this early!
-    public static void initialize(){
-        setRestoreMap();
-        setFlairMap();
-        setDescMap();
-        setSatMap();
-        setEffectMap();
-    }
+
 
     // Returns true if the material is present in ALL info maps
     public static boolean allMapsContain(Material key){
-        return (restoreMap.containsKey(key) && flairMap.containsKey(key) && descMap.containsKey(key) && satMap.containsKey(key) && effectMap.containsKey(key));
+        return (restoreMap.containsKey(key) && loreMap.containsKey(key) && satMap.containsKey(key) && effectMap.containsKey(key));
     }
 
-    private static void setRestoreMap(){
-        restoreMap.put(Material.COOKED_PORKCHOP, 8);
-        restoreMap.put(Material.COOKED_BEEF, 6);
-        restoreMap.put(Material.APPLE, 4);
-        restoreMap.put(Material.BREAD, 5);
+    // Initialize the maps from the config. Call AFTER setting fileConfig.
+    public static void initialize(){
+        try {
+            Objects.requireNonNull(fileConfig.getConfigurationSection("food")).getKeys(false).forEach(food -> {
+                // Get current material
+                Material curFoodMaterial = Material.getMaterial(food);
+                Main.sendDebugMessage("[Shokuji] CONFIG: Found food " + food,debugConfig);
+                // Initialize numeric values
+                int restore = fileConfig.getInt("food." + food + ".restore");
+                restoreMap.put(curFoodMaterial,restore);
+                float sat = (float)fileConfig.getDouble("food." + food + ".saturation");
+                satMap.put(curFoodMaterial, sat);
+                Main.sendDebugMessage("[Shokuji] CONFIG: Restore and Saturation Successful",debugConfig);
 
-        restoreMap.put(Material.ROTTEN_FLESH, -2);
+                // Get desc/flair strings
+                List<String> desc = fileConfig.getStringList("food." + food + ".description");
+                List<String> flair = fileConfig.getStringList("food." + food + ".flair");
+                Main.sendDebugMessage("[Shokuji] CONFIG: desc and flair found",debugConfig);
+
+                // Get list of probLists for effectMap
+                List<PotionProbList> listOfProbLists = new ArrayList<>();
+                Objects.requireNonNull(fileConfig.getConfigurationSection("food." + food + ".effects")).getKeys(false).forEach(customProbList -> {
+                    // Scope of Probability Lists
+                    Main.sendDebugMessage("[Shokuji] CONFIG: Working on " + customProbList,debugConfig);
+
+                    List<PotionProb> listOfPotionProbs = new ArrayList<>();
+                    Objects.requireNonNull(fileConfig.getConfigurationSection("food." + food + ".effects." + customProbList)).getKeys(false).forEach(customProb -> {
+                        // Scope of Probabilities/Effects
+                        Main.sendDebugMessage("[Shokuji] CONFIG: Working on " + customProb,debugConfig);
+
+                        PotionEffectType type = PotionEffectType.getByName(Objects.requireNonNull(fileConfig.getString("food." + food + ".effects." + customProbList + "." + customProb + ".effect")));
+                        Main.sendDebugMessage("[Shokuji] CONFIG: Type " + type + " found.",debugConfig);
+                        int duration = fileConfig.getInt("food." + food + ".effects." + customProbList + "." + customProb + ".duration");
+                        Main.sendDebugMessage("[Shokuji] CONFIG: Duration " + duration + " found",debugConfig);
+                        int amplifier = fileConfig.getInt("food." + food + ".effects." + customProbList + "." + customProb + ".amplifier");
+                        Main.sendDebugMessage("[Shokuji] CONFIG: Amplifier " + amplifier + " found",debugConfig);
+                        double prob = fileConfig.getDouble("food." + food + ".effects." + customProbList + "." + customProb + ".probability");
+                        Main.sendDebugMessage("[Shokuji] CONFIG: Probability " + prob + " found",debugConfig);
+
+                        if (type == null){
+                            System.out.println("[Shokuji] PotionEffectType for " + customProb + " in " + customProbList + " for " + food + " was null. Make sure the name is correct per Spigot naming");
+                        } else if (prob == 0) {
+                            System.out.println("[Shokuji] The probability for " + customProb + " is 0. Are you sure this is correct?");
+                        }
+
+                        listOfPotionProbs.add(new PotionProb(new PotionEffect(Objects.requireNonNull(type),duration,amplifier),prob));
+                    });
+                    Main.sendDebugMessage("[Shokuji] CONFIG: Each custom probability was added",debugConfig);
+                    listOfProbLists.add(new PotionProbList(listOfPotionProbs));
+                });
+                Main.sendDebugMessage("[Shokuji] CONFIG: List of lists finished",debugConfig);
+                effectMap.put(curFoodMaterial,listOfProbLists);
+                Main.sendDebugMessage("[Shokuji] CONFIG: EffectMap initialized.",debugConfig);
+                setLoreMap(curFoodMaterial,restore,sat,desc,flair);
+                Main.sendDebugMessage("[Shokuji] CONFIG: LoreMap initialized.",debugConfig);
+            });
+        } catch (NullPointerException e){
+            System.out.println("[Shokuji] Couldn't load config. Path food returned null pointer.");
+        }
     }
 
-    private static void setDescMap(){
-        descMap.put(Material.COOKED_PORKCHOP, Arrays.asList("Gives Instant Health.","5% chance for Large Heal.","Disables sprinting for a short while.","Just like the good old days!"));
-        descMap.put(Material.COOKED_BEEF, Arrays.asList("Provides Resistance for a short while.","Considerably high saturation."));
-        descMap.put(Material.APPLE, Arrays.asList("Cures several ailments.","(Nausea, Poison,","Blindness, Wither)","2.5% chance gives poison."));
-        descMap.put(Material.BREAD, Arrays.asList("Cures Hunger.","Notably high nourishment value."));
+    private static void setLoreMap(Material material, int restore, float sat, List<String> desc, List<String> flair){
+        // Builds the description for the food item, and
+        // places it in the map.
+        List<String> lore = new ArrayList<>();
+        if (restore >= 0){
+            lore.add("§aRestores " + restore + " Hunger");
+        } else {
+            lore.add("§cDepletes " + java.lang.Math.abs(restore) + " Hunger");
+        }
 
-        descMap.put(Material.ROTTEN_FLESH, Arrays.asList("Instantly depletes hunger.","80% chance Hunger Debuff"));
+        // Saturaiton and Nourishment Value
+        BigDecimal bd = BigDecimal.valueOf(sat / restore);
+        bd = bd.round(new MathContext(3));
+        lore.add("§bSaturation: " + sat + " §9(" + bd.doubleValue() + " Nourishment)");
+
+        // Description of Effects
+        lore.add("\n");
+        for (String s : desc){
+            lore.add("§e" + s);
+        }
+
+        // Flair
+        lore.add("\n");
+        for (String s : flair){
+            lore.add("§3§o" + s);
+        }
+
+        loreMap.put(material, lore);
     }
 
-    private static void setFlairMap(){
-        flairMap.put(Material.COOKED_PORKCHOP, Arrays.asList("A classic delicacy.","Eating this makes you nostalgic."));
-        flairMap.put(Material.COOKED_BEEF, Arrays.asList("The quintessential choice of meat lovers.","Nobody can turn down a hearty steak!"));
-        flairMap.put(Material.APPLE, Arrays.asList("An apple a day","keeps the status effects away!"));
-        flairMap.put(Material.BREAD, Arrays.asList("Bread is quite filling,","so be sure to eat it last!"));
-
-        flairMap.put(Material.ROTTEN_FLESH,Arrays.asList("This is pretty disgusting.","But it serves as a good palette cleanser."));
-    }
-
-    private static void setSatMap(){
-        satMap.put(Material.COOKED_PORKCHOP, 11.5f);
-        satMap.put(Material.COOKED_BEEF,9.8f);
-        satMap.put(Material.APPLE, 2.8f);
-        satMap.put(Material.BREAD, 9.8f);
-
-        satMap.put(Material.ROTTEN_FLESH, 0.8f);
-    }
-
-    private static void setEffectMap(){
-        // Cooked PorkChop
-        // Instant Health
-        PotionProbList porkInstantHP = new PotionProbList(Arrays.asList(
-                new PotionProb(new PotionEffect(PotionEffectType.HEAL, 1, 0), 0.95),
-                new PotionProb(new PotionEffect(PotionEffectType.HEAL, 1, 2), 0.05)));
-        // No Sprint
-        PotionProbList porkSpeed = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.SPEED, 260, -1), 1)));
-        effectMap.put(Material.COOKED_PORKCHOP, Arrays.asList(porkInstantHP,porkSpeed));
-
-        // Cooked Beef
-        // Resistance
-        PotionProbList beefResist = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 260,0), 1)));
-        effectMap.put(Material.COOKED_BEEF, Collections.singletonList(beefResist));
-
-        // Apple (Nausea, Poison, Wither, Blindness, Hunger)
-        PotionProbList appleNausea = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.CONFUSION, -1, 0), 1)));
-        PotionProbList applePoison = new PotionProbList(Arrays.asList(
-                new PotionProb(new PotionEffect(PotionEffectType.POISON, -1,0), 0.975),
-                new PotionProb(new PotionEffect(PotionEffectType.POISON, 260,0), 0.025))); // Small chance of poisoning!
-        PotionProbList appleWither = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.WITHER,-1,0),1)));
-        PotionProbList appleBlind = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.BLINDNESS,-1,0),1)));
-        effectMap.put(Material.APPLE,Arrays.asList(appleNausea,applePoison,appleWither,appleBlind));
-
-        // Bread (Cures Hunger)
-        PotionProbList breadHunger = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.HUNGER, -1,1),1)));
-        effectMap.put(Material.BREAD,Collections.singletonList(breadHunger));
-
-        // Rotten Flesh
-        PotionProbList rotHunger = new PotionProbList(Collections.singletonList(
-                new PotionProb(new PotionEffect(PotionEffectType.HUNGER, 600,0),0.8)));
-        effectMap.put(Material.ROTTEN_FLESH, Collections.singletonList(rotHunger));
-    }
 
 }
