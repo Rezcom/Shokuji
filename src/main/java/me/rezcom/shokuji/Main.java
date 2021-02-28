@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 import me.rezcom.shokuji.invhandler.InvClickHandler;
+import me.rezcom.shokuji.invhandler.InvCloseHandler;
 import me.rezcom.shokuji.invhandler.InvDragHandler;
 import me.rezcom.shokuji.invhandler.InvOpenHandler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,6 +18,7 @@ public final class Main extends JavaPlugin {
 
         this.saveDefaultConfig();
         FoodInfo.fileConfig = this.getConfig(); // Pass config to food so it can build descriptions.
+
         FoodInfo.debugConfig = this.getConfig().getBoolean("debug-config");
         PotionProbList.probDebug = this.getConfig().getBoolean("debug-probability");
         FoodInfo.initialize();
@@ -25,7 +27,7 @@ public final class Main extends JavaPlugin {
         AntiSprintEvent.enabled = this.getConfig().getBoolean("enable-no-sprint");
 
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-        protocolManager.addPacketListener(new FoodDataHandler(this, ListenerPriority.NORMAL, PacketType.Play.Server.SET_SLOT));
+        protocolManager.addPacketListener(new ItemDescHandler(this, ListenerPriority.NORMAL, PacketType.Play.Server.SET_SLOT));
         //protocolManager.addPacketListener(new AntiSprintPacket(this, ListenerPriority.NORMAL, PacketType.Play.Client.ENTITY_ACTION));
 
 
@@ -43,9 +45,11 @@ public final class Main extends JavaPlugin {
         // Plugin shutdown logic
     }
 
+
+
     public static void sendDebugMessage(String string, boolean send){
         if (send){
-            System.out.println(string);
+            System.out.println("[Shokuji] " + string);
         }
     }
 }

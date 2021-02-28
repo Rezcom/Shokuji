@@ -13,6 +13,10 @@
 #       - "Line1 of the flair."
 #       - "Line2"
 #       - etc
+#
+#     If you don't want the food to have any effects, you still need to write "effects:", but you can
+#     leave it blank.
+#
 #     effects: <- Each food can have MULTIPLE probability rolls.
 #
 #       A probability roll is a list of probabilities of effects. Whenever a food is eaten, the player receives ONE EFFECT
@@ -50,48 +54,50 @@
 #
 # Additionally, on top of the previous probabilities, they will have a 20% chance to get speed for 6 seconds,
 # but a 30% chance to get blindness for 10 seconds. The remaining 50% is chance for neither of these to happen.
-
 # When set to true, any player with the effect Speed of amplifier -1 will have sprinting negated to a crawl.
 enable-no-sprint: true
 
 food:
 
-  COOKED_PORKCHOP:
+  # COOKED MEAT
+  COOKED_PORKCHOP:  # 9.3 / 8 = 1.1625
+    name:
     restore: 8
-    saturation: 8.4
+    saturation: 9.3
     description: # Each entry is a separate line. Ensure each is a string wrapped in double quotes.
-      - "Gives Instant Health."
-      - "5% Chance for Large Heal."
-      - "Disables Sprinting for a bit."
+      - "Gives Instant Health II."
+      - "9% Chance for Instant Health III."
+      - "Disables Sprinting for 13s."
       - "Just like the good old days!"
     flair:
       - "A classic delicacy."
       - "Eating this makes you nostalgic."
 
-    effects: # All Probability Rolls; Players get (or don't get) an effect FROM EACH ONE
+    effects: # All Probability Rolls; Players get (or don't get) an effect FROM EACH ONE.
       porkInstantHP: # A single probability roll, named whatever you want.
         smallHeal: # Probability of a single effect in this roll; name whatever you want.
           effect: HEAL
           duration: 1
-          amplifier: 0
-          probability: 0.95
+          amplifier: 1
+          probability: 0.91
         bigHeal:
           effect: HEAL
           duration: 1
           amplifier: 2
-          probability: 0.05
+          probability: 0.09
       porkSpeed:
         noSprint:
           effect: SPEED
           duration: 260
           amplifier: -1 # Speed of -1 amplifier has been reserved for activating "No Sprint"
-          probability: 1.0 # Set to 1 to always happen. You MUST have this even if the probability is 1.0
+          probability: 1 # Set to 1 to always happen. You MUST have this even if the probability is 1.0
 
-  COOKED_BEEF:
-    restore: 6
-    saturation: 8.4
+  COOKED_BEEF:      # 8.2 / 7 = 1.1714
+    name:
+    restore: 7
+    saturation: 8.2
     description:
-      - "Provides Resistance for a bit."
+      - "Gives Resistance for 18s."
     flair:
       - "The quintessential choice of meat lovers."
       - "Nobody can turn down a hearty steak!"
@@ -99,18 +105,161 @@ food:
       beefResist:
         resist:
           effect: DAMAGE_RESISTANCE
-          duration: 260
+          duration: 360
           amplifier: 0
           probability: 1.0
 
-  APPLE:
+  COOKED_CHICKEN:   # 7.1 / 6 = 1.1833
+    name:
+    restore: 6
+    saturation: 7.1
+    description:
+      - "Gives Slow Falling for 20s."
+    flair:
+      - "Was there ever a more"
+      - "iconic meat than poultry?"
+    effects:
+      chickFall:
+        giveSlowFall:
+          effect: SLOW_FALLING
+          duration: 400
+          amplifier: 0
+          probability: 1.0
+
+  COOKED_MUTTON:    # 6.9 / 6 = 1.15    # ON AVERAGE, gives 20.52s of Health Boost I
+    name:
+    restore: 6
+    saturation: 6.9
+    description:
+      - "Gives Health Boost for 18s."
+      - "14% chance for double duration."
+    flair:
+      - "Eating this luxury makes"
+      - "you feel revitalized."
+    effects:
+      muttonBoost:
+        shortBoost:
+          effect: HEALTH_BOOST
+          duration: 360
+          amplifier: 0
+          probability: 0.86
+        longBoost:
+          effect: HEALTH_BOOST
+          duration: 720
+          amplifier: 0
+          probability: 0.14
+
+  COOKED_SALMON:    # 6.8 / 6 = 1.133   # ON AVERAGE, gives 27s of Dolphin's Grace
+    name:
+    restore: 6
+    saturation: 6.8
+    description:
+      - "Gives Dolphin's Grace for 21s."
+      - "30% chance for double duration."
+    flair:
+      - "The delightful dish of"
+      - "a strong swimming fish!"
+    effects:
+      DolphinBoost:
+        shortBoost:
+          effect: DOLPHINS_GRACE
+          duration: 420
+          amplifier: 0
+          probability: 0.7
+        longBoost:
+          effect: DOLPHINS_GRACE
+          duration: 840
+          amplifier: 0
+          probability: 0.3
+
+  COOKED_COD:       # 5.7 / 5 = 1.14
+    name:
+    restore: 5
+    saturation: 5.7
+    description:
+      - "Gives Water Breathing 35s."
+    flair:
+      - "Iconic for its mild flavor"
+      - "and dense, flaky, white flesh."
+    effects:
+      CodWaterBreath:
+        giveWaterBreath:
+          effect: WATER_BREATHING
+          duration: 700
+          amplifier: 0
+          probability: 1.0
+
+  COOKED_RABBIT:    # 6.0 / 5 = 1.2
+    name:
+    restore: 5
+    saturation: 6
+    description:
+      - "Gives Speed for 25s."
+      - "40% chance for Jump Boost 25s."
+    flair:
+      - "It's just as delicious"
+      - "as it was cute."
+    effects:
+      rabbitSpeed:
+        giveSpeed:
+          effect: SPEED
+          duration: 500
+          amplifier: 0
+          probability: 1.0
+      rabbitJump:
+        giveJump:
+          effect: JUMP
+          duration: 500
+          amplifier: 0
+          probability: 0.4
+
+  RABBIT_STEW:      # 9.7 / 9 = 1.078
+    name:
+    restore: 9
+    saturation: 9.7
+    description:
+      - "Gives Speed II for 25s."
+      - "Gives Jump Boost I for 35s."
+      - "40% chance for Jump Boost II 35s."
+      - "Gives Absorption for 25s."
+    flair:
+      - "This is the ultimate dish for"
+      - "adventurers craving a robust stew."
+    effects:
+      rabStewSpeed:
+        giveSpeed:
+          effect: SPEED
+          duration: 700
+          amplifier: 1
+          probability: 1.0
+      rabStewJump:
+        smallJump:
+          effect: JUMP
+          duration: 700
+          amplifier: 0
+          probability: 0.6
+        bigJump:
+          effect: JUMP
+          duration: 700
+          amplifier: 1
+          probability: 0.4
+      rabStewAbs:
+        giveAbs:
+          effect: ABSORPTION
+          duration: 500
+          amplifier: 0
+          probability: 1.0
+
+  # NON-MEAT
+  APPLE:            # 2.8 / 4 = 0.7
+    name:
     restore: 4
     saturation: 2.8
     description:
       - "Cures several ailments."
       - "(Nausea, Poison, Fatigue,"
       - "Blindness, Wither)"
-      - "2.5% chance to Poison."
+      - "2.5% chance to Poison 13s."
     flair:
       - "An apple a day"
       - "keeps the status effects away!"
@@ -151,12 +300,60 @@ food:
           amplifier: 0
           probability: 1.0
 
-  BREAD:
+  BAKED_POTATO:     # 8.8 / 5 = 1.76
+    name:
     restore: 5
-    saturation: 8.5
+    saturation: 8.8
+    description:
+      - "Gives Absorption for 25s."
+      - "10% chance for Bonus Absorption."
+    flair:
+      - "Nothing's heartier than baked"
+      - "potato! It's the heartiest!"
+    effects:
+      bakedAbs:
+        smallAbs:
+          effect: ABSORPTION
+          duration: 500
+          amplifier: 0
+          probability: 0.9
+        bigAbs:
+          effect: ABSORPTION
+          duration: 500
+          amplifier: 1
+          probability: 0.1
+
+  BEETROOT_SOUP:    # 6.5 / 6 = 1.0833
+    name:
+    restore: 6
+    saturation: 6.5
+    description:
+      - "Grants Strength for 27s."
+      - "12% chance for Regeneration II 9.5s."
+    flair:
+      - "One of the healthiest foods out there."
+      - "Deliciously aids in packing a punch."
+    effects:
+      beetrootStr:
+        giveStr:
+          effect: INCREASE_DAMAGE
+          duration: 540
+          amplifier: 0
+          probability: 1.0
+      beetrootRegen:
+        giveRegen:
+          effect: REGENERATION
+          duration: 190
+          amplifier: 1
+          probability: 0.12
+
+  BREAD:            # 8.8 / 5 = 1.76
+    name:
+    restore: 5
+    saturation: 8.8
     description:
       - "Cures Hunger."
-      - "29% chance bonus Saturation."
+      - "27% chance bonus Saturation."
     flair:
       - "Bread is a surefire way"
       - "to keep your belly full!"
@@ -172,37 +369,155 @@ food:
           effect: SATURATION
           duration: 2
           amplifier: 1
-          probability: 0.29
+          probability: 0.27
 
-  BEETROOT_SOUP:
-    restore: 6
-    saturation: 6.5
+  COOKIE:           # 0.4 / 2 = 0.2
+    name:
+    restore: 2
+    saturation: 0.4
     description:
-      - "Grants Strength for a bit."
-      - "12% chance for brief Regeneration."
+      - "Gives Haste for 20s."
+      - "Inflicts Heavy Weakness for 20s."
     flair:
-      - "One of the healthiest foods out there."
-      - "Deliciously aids in packing a punch."
+      - "They're almost as good"
+      - "as your grandma's."
     effects:
-      beetrootStr:
-        giveStr:
-          effect: INCREASE_DAMAGE
-          duration: 260
+      cookieHaste:
+        giveHaste:
+          effect: FAST_DIGGING
+          duration: 400
           amplifier: 0
-          probability: 1.0
-      beetrootRegen:
-        giveRegen:
-          effect: REGENERATION
-          duration: 190
-          amplifier: 1
+          probability: 1
+      cookieWeak:
+        giveWeak:
+          effect: WEAKNESS
+          duration: 400
+          amplifier: 3
+          probability: 1
+
+  DRIED_KELP:       # 0.6 / 1 = 0.6
+    name:
+    restore: 1
+    saturation: 0.6
+    description:
+      - "Gives Conduit Power for 14s."
+      - "Inflicts Weakness V for 14s."
+      - "Inflicts Slowness I for 14s."
+    flair:
+      - "Traditionally used for broth making,"
+      - "but serves as a great light snack too."
+    effects:
+      kelpConduit:
+        giveConduit:
+          effect: CONDUIT_POWER
+          duration: 280
+          amplifier: 0
+          probability: 1
+      kelpWeakness:
+        giveWeak:
+          effect: WEAKNESS
+          duration: 280
+          amplifier: 0
+          probability: 1
+      kelpSlow:
+        giveSlow:
+          effect: SLOW
+          duration: 280
+          amplifier: 0
+          probability: 1
+
+  MELON_SLICE:      # 1.2 / 2 = 0.6     # ON AVERAGE, gives 54s of Luck I
+    name:
+    restore: 2
+    saturation: 1.2
+    description:
+      - "Gives increased Luck for 45s."
+      - "20% chance for double duration."
+    flair:
+      - "This refreshing fruit emits"
+      - "a rather auspicious aura."
+    effects:
+      melonLuck:
+        shortLuck:
+          effect: LUCK
+          duration: 900
+          amplifier: 0
+          probability: 0.8
+        longLuck:
+          effect: LUCK
+          duration: 1800
+          amplifier: 0
+          probability: 0.2
+
+  PUMPKIN_PIE:      # 4.0 / 6 = 0.667   # ON AVERAGE, gives 43.68s of Night Vision
+    name:
+    restore: 6
+    saturation: 4.0
+    description:
+      - "60% chance to cure Blindness"
+      - "Gives Night Vision for 39s."
+      - "12% chance for double duration."
+    flair:
+      - "An irresistible treat for"
+      - "the particularly perceptive!"
+    effects:
+      pumpBlind:
+        cureBlind:
+          effect: BLINDNESS
+          duration: -1
+          amplifier: 0
+          probability: 0.6
+      pumpNightVis:
+        shortDur:
+          effect: NIGHT_VISION
+          duration: 780
+          amplifier: 0
+          probability: 0.88
+        longDur:
+          effect: NIGHT_VISION
+          duration: 1560
+          amplifier: 0
           probability: 0.12
 
-  BEEF: # Raw Beef
+  # RAW FOODS
+  PORKCHOP:         # 1.8 / 3 = 0.6
+    name:
     restore: 3
     saturation: 1.8
     description:
-      - "Gives Nausea."
-      - "5% chance to Poison."
+      - "Gives Nausea for 18s."
+      - "11% chance to Poison for 18s."
+      - "Disables sprinting for 18s."
+      - "Just like the good old days!"
+    flair:
+      - "Not exactly the optimal,"
+      - "but nostalgic nonetheless."
+    effects:
+      porkNausea:
+        giveNaus:
+          effect: CONFUSION
+          duration: 360
+          amplifier: 0
+          probability: 1
+      porkPoison:
+        givePois:
+          effect: POISON
+          duration: 360
+          amplifier: 0
+          probability: 0.11
+      porkSpeed:
+        noSprint:
+          effect: SPEED
+          duration: 360
+          amplifier: -1
+          probability: 1
+  BEEF:             # 1.8 / 3 = 0.6
+    name:
+    restore: 3
+    saturation: 1.8
+    description:
+      - "Gives Nausea for 18s."
+      - "5% chance to Poison 18s."
     flair:
       - "Most people don't prefer"
       - "steak THIS rare!"
@@ -210,53 +525,25 @@ food:
       beefNausea:
         giveNaus:
           effect: CONFUSION
-          duration: 260
+          duration: 360
           amplifier: 0
           probability: 1
       beefPoison:
         givePois:
           effect: POISON
-          duration: 260
+          duration: 360
           amplifier: 0
           probability: 0.05
 
-  PORKCHOP: # Raw Pork
-    restore: 3
-    saturation: 1.8
-    description:
-      - "Gives Nausea."
-      - "11% chance to Poison."
-      - "Disables sprinting for a bit."
-      - "Just like the good old days!"
-    flair:
-      - "Not exactly the optimal,"
-      - "nostalgic nonetheless."
-    effects:
-      porkNausea:
-        giveNaus:
-          effect: CONFUSION
-          duration: 260
-          amplifier: 0
-          probability: 1
-      porkPoison:
-        givePois:
-          effect: POISON
-          duration: 260
-          amplifier: 0
-          probability: 0.11
-      porkSpeed:
-        noSprint:
-          effect: SPEED
-          duration: 260
-          amplifier: -1
-          probability: 1
-
-  CHICKEN: # Raw Chicken
+  CHICKEN:          # 1.2 / 2 = 0.6
+    name:
     restore: 2
     saturation: 1.2
     description:
-      - "Gives heavy Nausea."
-      - "77% chance to heavily Poison."
+      - "Gives heavy Nausea for 18s."
+      - "77% chance to inflict"
+      - "deadly Poison for 18s."
+      - "20% chance for Slow Falling 20s."
     flair:
       - "'Salmonella' isn't as delicious"
       - "as it sounds."
@@ -264,23 +551,269 @@ food:
       chickNaus:
         giveNaus:
           effect: CONFUSION
-          duration: 260
+          duration: 360
           amplifier: 1
           probability: 1
       chickPoison:
         givePois:
           effect: POISON
-          duration: 260
+          duration: 360
           amplifier: 1
           probability: 0.77
+      chickSlowFall:
+        giveSlowFall:
+          effect: SLOW_FALLING
+          duration: 400
+          amplifier: 0
+          probability: 0.2
 
-  ROTTEN_FLESH:
-    restore: -2
+
+  MUTTON:           # 1.2 / 2 = 0.6
+    name:
+    restore: 2
+    saturation: 1.2
+    description:
+      - "Gives Nausea for 25s."
+      - "8% chance to Poison 25s."
+    flair:
+      - "It's like rare steak, but"
+      - "with extra trichinosis!"
+    effects:
+      muttonNausea:
+        giveNaus:
+          effect: CONFUSION
+          duration: 500
+          amplifier: 0
+          probability: 1
+      muttonPoison:
+        givePois:
+          effect: POISON
+          duration: 500
+          amplifier: 0
+          probability: 0.08
+
+  RABBIT:           # 1.8 / 3 = 0.6
+    name:
+    restore: 3
+    saturation: 1.8
+    description:
+      - "Gives Nausea for 28s."
+      - "8% chance to Poison 28s."
+    flair:
+      - "How could you?"
+      - "You monster."
+    effects:
+      rabbitNaus:
+        giveNaus:
+          effect: CONFUSION
+          duration: 560
+          amplifier: 0
+          probability: 1.0
+      rabbitPois:
+        givePois:
+          effect: POISON
+          duration: 560
+          amplifier: 0
+          probability: 0.08
+
+  SALMON:           # 0.4 / 2 = 0.2
+    name:
+    restore: 2
+    saturation: 0.4
+    description:
+      - "45% chance to give Nausea 13s."
+      - "4% chance to Poison 13s."
+    flair:
+      - "Just think of it like sushi,"
+      - "but with WAY more bones."
+    effects:
+      salmonNaus:
+        giveNaus:
+          effect: CONFUSION
+          duration: 260
+          amplifier: 0
+          probability: 0.45
+      salmonPois:
+        givePois:
+          effect: POISON
+          duration: 260
+          amplifier: 0
+          probability: 0.04
+
+  COD:              # 0.2 / 1 = 0.2
+    name:
+    restore: 1
+    saturation: 0.2
+    description:
+      - "45% chance to give Nausea 13s."
+      - "4% chance to give Poison 13s."
+      - "6% chance for Water Breathing 13s."
+    flair:
+      - "You could think of it like"
+      - "sushi, ignoring the parasites."
+    effects:
+      codNaus:
+        giveNaus:
+          effect: CONFUSION
+          duration: 260
+          amplifier: 0
+          probability: 0.45
+      codPois:
+        givePois:
+          effect: POISON
+          duration: 260
+          amplifier: 0
+          probability: 0.04
+      codBreath:
+        giveBreath:
+          effect: WATER_BREATHING
+          duration: 260
+          amplifier: 0
+          probability: 0.06
+
+  TROPICAL_FISH:    # 0.2 / 1 = 0.2
+    name:
+    restore: 1
+    saturation: 0.2
+    description:
+      - "1% chance for Conduit Power 60s."
+    flair:
+      - "It's much nicer to"
+      - "look at than to eat."
+    effects:
+      tropConduit:
+        giveConduit:
+          effect: CONDUIT_POWER
+          duration: 1200
+          amplifier: 0
+          probability: 0.01
+
+  PUFFERFISH: # 0.2 / 1 = 0.2
+    name:
+    restore: 1
+    saturation: 0.2
+    description:
+      - "Inflicts Great Hunger 15s."
+      - "Gives Nausea for 15s."
+      - "Inflicts Poison IV for 60s."
+    flair:
+      - "Don't even think about it."
+      - "Seriously."
+    effects:
+      pufferHung:
+        giveHunger:
+          effect: HUNGER
+          duration: 300
+          amplifier: 2
+          probability: 1
+      pufferNaus:
+        giveNaus:
+          effect: CONFUSION
+          duration: 300
+          amplifier: 0
+          probability: 1
+      pufferPois:
+        givePois:
+          effect: POISON
+          duration: 1200
+          amplifier: 3
+          probability: 1
+
+  POTATO: # 0.6 / 1 = 0.6
+    name:
+    restore: 1
+    saturation: 0.6
+    description:
+      - "10% chance to give"
+      - "Absorption for 10s."
+    flair:
+      - "This vegetable is found all"
+      - "over the world, to end up here."
+    effects:
+      potatoAbs:
+        giveAbs:
+          effect: ABSORPTION
+          duration: 200
+          amplifier: 0
+          probability: 0.1
+
+  POISONOUS_POTATO: # 1.2 / 2 = 0.6
+    name:
+    restore: 2
+    saturation: 1.2
+    description:
+      - "60% chance to Poison 4s."
+    flair:
+      - "Ironically, this is closer"
+      - "to what an original potato was."
+    effects:
+      poisonPotato:
+        givePois:
+          effect: POISON
+          duration: 80
+          amplifier: 0
+          probability: 0.6
+
+  BEETROOT:         # 0.9 / 1 = 0.9
+    name:
+    restore: 1
+    saturation: 0.9
+    description:
+      - "10% chance for Strength 18s."
+      - "1.2% chance for Regeneration 9.5s."
+    flair:
+      - "A common vegetable enjoyed"
+      - "by pigs and villagers alike."
+    effects:
+      beetStr:
+        giveStr:
+          effect: INCREASE_DAMAGE
+          duration: 360
+          amplifier: 0
+          probability: 0.1
+      beetRegen:
+        giveRegen:
+          effect: REGENERATION
+          duration: 190
+          amplifier: 0
+          probability: 0.012
+
+  CARROT:           # 1.8 / 3 = 0.6
+    name:
+    restore: 3
+    saturation: 1.8
+    description:
+      - "10% chance to cure Blindness."
+    flair:
+      - "You've never seen a"
+      - "rabbit with glasses, eh?"
+    effects:
+      carrotCure:
+        blindCure:
+          effect: BLINDNESS
+          duration: -1
+          amplifier: 0
+          probability: 0.1
+  # OTHER
+  GOLDEN_CARROT:    # 14.4 / 6 = 2.4
+    name:
+    restore: 6
+    saturation: 14.4
+    description:
+      - "Exceptionally high Saturation."
+    flair:
+      - "A mystical and"
+      - "highly nutritive snack."
+    effects:
+
+  ROTTEN_FLESH:     # 0.8 / -8 = -0.4
+    name:
+    restore: -8
     saturation: 0.8
     description:
-      - "Gives Nausea."
-      - "20% chance to Poison."
-      - "80% chance Hunger Debuff."
+      - "Gives Nausea for 4s."
+      - "20% chance to Poison for 4s."
+      - "80% chance Hunger Debuff 30s."
     flair:
       - "This is pretty disgusting."
       - "But it serves as a good palette cleanser."
@@ -288,7 +821,7 @@ food:
       rotNaus:
         giveNaus:
           effect: CONFUSION
-          duration: 200
+          duration: 80
           amplifier: 0
           probability: 1
       rotHunger:
@@ -300,14 +833,27 @@ food:
       rotPoison:
         givePoison:
           effect: POISON
-          duration: 260
+          duration: 80
           amplifier: 0
           probability: 0.2
 
-
+ingredients:
+  SUGAR:
+    description:
+      - "One of the oldest, tastiest"
+      - "crops in history. Predominantly"
+      - "used in baking sweet pastries"
+      - "like Cake and Pumpkin Pie."
 
 # Sends all probability rolls to the console. Don't touch if not debugging.
 debug-probability: false
 
 # Sends all config-loading debug prints to the console. Don't touch if not debugging.
 debug-config: false
+
+# Events; determines which events override item descriptions.
+
+click-event: true
+close-event: true
+drag-event: true
+open-event: true

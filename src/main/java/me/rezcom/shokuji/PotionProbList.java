@@ -42,14 +42,14 @@ public class PotionProbList {
         probList.sort(PotionProb.Comparators.PROBABILITY); // Sort the list by probability
         Random rand = new Random();
         double result = rand.nextDouble();
-        Main.sendDebugMessage("[Shokuji] Probability Roll RESULT: " + result,probDebug);
+        Main.sendDebugMessage("Probability Roll RESULT: " + result,probDebug);
         for (PotionProb potionProb : probList){
-            Main.sendDebugMessage("[Shokuji] RESULT TO GO UNDER: " + potionProb.probability + base,probDebug);
+            Main.sendDebugMessage("RESULT TO GO UNDER: " + potionProb.probability + base,probDebug);
             if (result <= (potionProb.probability + base)){
-                Main.sendDebugMessage("[Shokuji] ROLL SUCCESS",probDebug);
+                Main.sendDebugMessage("ROLL SUCCESS",probDebug);
                 return potionProb.potionEffect;
             }
-            Main.sendDebugMessage("[Shokuji] ROLL FAILURE",probDebug);
+            Main.sendDebugMessage("ROLL FAILURE",probDebug);
             base += potionProb.probability;
 
         }
