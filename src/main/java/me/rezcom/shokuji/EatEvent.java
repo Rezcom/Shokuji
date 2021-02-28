@@ -16,30 +16,26 @@ public class EatEvent implements Listener {
             return;
         }
         Player player = (Player)event.getEntity();
-        //System.out.println(player.getSaturation() + " SAT BEFORE");
         ItemStack foodItem = event.getItem();
-
         // If a food item has been modified
-        if (foodItem != null && FoodInfo.allMapsContain(foodItem.getType())){
+        if (foodItem != null && foodItem.getItemMeta() != null && FoodInfo.foodMap.containsKey(foodItem.getType())){
             // Feed player
             event.setCancelled(true);
-            player.setFoodLevel(Math.min(player.getFoodLevel() + FoodInfo.restoreMap.get(foodItem.getType()), 20));
-            player.setSaturation(Math.min(player.getSaturation() + FoodInfo.satMap.get(foodItem.getType()), player.getFoodLevel()));
+            EdibleItem modifiedFood = FoodInfo.foodMap.get(foodItem.getType());
+            player.setFoodLevel(Math.max(Math.min(player.getFoodLevel() + modifiedFood.getRestore(), 20),0));
+            player.setSaturation(Math.min(player.getSaturation() + modifiedFood.getSaturation(), player.getFoodLevel()));
 
             // Apply effects
-            for (PotionProbList potionProbList : FoodInfo.effectMap.get(foodItem.getType())){
+            for (PotionProbList potionProbList : modifiedFood.getEffects()){
                 PotionEffect effect = potionProbList.get();
                 if (effect != null){
                     applyEffect(effect, player);
                 }
             }
-            /*for (PotionEffect potionEffect : FoodInfo.effectMap.get(foodItem.getType())){
-                player.addPotionEffect(potionEffect);
-            }*/
+
+
         }
 
-        //System.out.println(player.getFoodLevel() + " FOOD LEVEL AFTER");
-        //System.out.println(player.getSaturation() + " SAT AFTER");
 
     }
 
