@@ -61,7 +61,7 @@ food:
 
   # COOKED MEAT
   COOKED_PORKCHOP:  # 9.3 / 8 = 1.1625
-    name: "Cooked Porkchop"
+    name:
     restore: 8
     saturation: 9.3
     description: # Each entry is a separate line. Ensure each is a string wrapped in double quotes.
@@ -93,7 +93,7 @@ food:
           probability: 1 # Set to 1 to always happen. You MUST have this even if the probability is 1.0
 
   COOKED_BEEF:      # 8.2 / 7 = 1.1714
-    name: "Steak"
+    name:
     restore: 7
     saturation: 8.2
     description:
@@ -108,7 +108,9 @@ food:
           duration: 360
           amplifier: 0
           probability: 1.0
+
   COOKED_CHICKEN:   # 7.1 / 6 = 1.1833
+    name:
     restore: 6
     saturation: 7.1
     description:
@@ -124,13 +126,13 @@ food:
           amplifier: 0
           probability: 1.0
 
-  COOKED_MUTTON:    # 6.9 / 6 = 1.15    # ON AVERAGE, gives 20.52s of Health Boost I
-    name: "Cooked Mutton"
+  COOKED_MUTTON:    # 6.9 / 6 = 1.15     # ON AVERAGE, gives 45.6s of Health Boost
+    name:
     restore: 6
     saturation: 6.9
     description:
-      - "Gives Health Boost for 18s."
-      - "14% chance for double duration."
+      - "Gives Health Boost for 40s."
+      - "0.14% chance for double duration."
     flair:
       - "Eating this luxury makes"
       - "you feel revitalized."
@@ -138,17 +140,17 @@ food:
       muttonBoost:
         shortBoost:
           effect: HEALTH_BOOST
-          duration: 360
+          duration: 800
           amplifier: 0
           probability: 0.86
         longBoost:
           effect: HEALTH_BOOST
-          duration: 720
+          duration: 1600
           amplifier: 0
           probability: 0.14
 
   COOKED_SALMON:    # 6.8 / 6 = 1.133   # ON AVERAGE, gives 27s of Dolphin's Grace
-    name: "Cooked Salmon"
+    name:
     restore: 6
     saturation: 6.8
     description:
@@ -171,7 +173,7 @@ food:
           probability: 0.3
 
   COOKED_COD:       # 5.7 / 5 = 1.14
-    name: "Cooked Cod"
+    name:
     restore: 5
     saturation: 5.7
     description:
@@ -188,7 +190,7 @@ food:
           probability: 1.0
 
   COOKED_RABBIT:    # 6.0 / 5 = 1.2
-    name: "Cooked Rabbit"
+    name:
     restore: 5
     saturation: 6
     description:
@@ -212,7 +214,7 @@ food:
           probability: 0.4
 
   RABBIT_STEW:      # 9.7 / 9 = 1.078
-    name: "Rabbit Stew"
+    name:
     restore: 9
     saturation: 9.7
     description:
@@ -250,7 +252,7 @@ food:
 
   # NON-MEAT
   APPLE:            # 2.8 / 4 = 0.7
-    name: "Apple"
+    name:
     restore: 4
     saturation: 2.8
     description:
@@ -299,7 +301,7 @@ food:
           probability: 1.0
 
   BAKED_POTATO:     # 8.8 / 5 = 1.76
-    name: "Baked Potato"
+    name:
     restore: 5
     saturation: 8.8
     description:
@@ -322,7 +324,7 @@ food:
           probability: 0.1
 
   BEETROOT_SOUP:    # 6.5 / 6 = 1.0833
-    name: "Beetroot Soup"
+    name:
     restore: 6
     saturation: 6.5
     description:
@@ -346,7 +348,7 @@ food:
           probability: 0.12
 
   BREAD:            # 8.8 / 5 = 1.76
-    name: "Bread"
+    name:
     restore: 5
     saturation: 8.8
     description:
@@ -370,7 +372,7 @@ food:
           probability: 0.27
 
   COOKIE:           # 0.4 / 2 = 0.2
-    name: "Cookie"
+    name:
     restore: 2
     saturation: 0.4
     description:
@@ -394,7 +396,7 @@ food:
           probability: 1
 
   DRIED_KELP:       # 0.6 / 1 = 0.6
-    name: "Dried Kelp"
+    name:
     restore: 1
     saturation: 0.6
     description:
@@ -425,7 +427,7 @@ food:
           probability: 1
 
   MELON_SLICE:      # 1.2 / 2 = 0.6     # ON AVERAGE, gives 54s of Luck I
-    name: "Melon Slice"
+    name:
     restore: 2
     saturation: 1.2
     description:
@@ -448,7 +450,7 @@ food:
           probability: 0.2
 
   PUMPKIN_PIE:      # 4.0 / 6 = 0.667   # ON AVERAGE, gives 43.68s of Night Vision
-    name: "Pumpkin Pie"
+    name:
     restore: 6
     saturation: 4.0
     description:
@@ -479,7 +481,7 @@ food:
 
   # RAW FOODS
   PORKCHOP:         # 1.8 / 3 = 0.6
-    name: "Raw Porkchop"
+    name:
     restore: 3
     saturation: 1.8
     description:
@@ -510,6 +512,7 @@ food:
           amplifier: -1
           probability: 1
   BEEF:             # 1.8 / 3 = 0.6
+    name:
     restore: 3
     saturation: 1.8
     description:
@@ -533,7 +536,7 @@ food:
           probability: 0.05
 
   CHICKEN:          # 1.2 / 2 = 0.6
-    name: "Raw Chicken"
+    name:
     restore: 2
     saturation: 1.2
     description:
@@ -566,7 +569,7 @@ food:
 
 
   MUTTON:           # 1.2 / 2 = 0.6
-    name: "Raw Mutton"
+    name:
     restore: 2
     saturation: 1.2
     description:
@@ -590,7 +593,7 @@ food:
           probability: 0.08
 
   RABBIT:           # 1.8 / 3 = 0.6
-    name: "Raw Rabbit"
+    name:
     restore: 3
     saturation: 1.8
     description:
@@ -614,7 +617,7 @@ food:
           probability: 0.08
 
   SALMON:           # 0.4 / 2 = 0.2
-    name: "Raw Salmon"
+    name:
     restore: 2
     saturation: 0.4
     description:
@@ -638,7 +641,7 @@ food:
           probability: 0.04
 
   COD:              # 0.2 / 1 = 0.2
-    name: "Raw Cod"
+    name:
     restore: 1
     saturation: 0.2
     description:
@@ -669,7 +672,7 @@ food:
           probability: 0.06
 
   TROPICAL_FISH:    # 0.2 / 1 = 0.2
-    name: "Tropical Fish"
+    name:
     restore: 1
     saturation: 0.2
     description:
@@ -686,7 +689,7 @@ food:
           probability: 0.01
 
   PUFFERFISH: # 0.2 / 1 = 0.2
-    name: "Pufferfish"
+    name:
     restore: 1
     saturation: 0.2
     description:
@@ -717,7 +720,7 @@ food:
           probability: 1
 
   POTATO: # 0.6 / 1 = 0.6
-    name: "Potato"
+    name:
     restore: 1
     saturation: 0.6
     description:
@@ -735,7 +738,7 @@ food:
           probability: 0.1
 
   POISONOUS_POTATO: # 1.2 / 2 = 0.6
-    name: "Poisonous Potato"
+    name:
     restore: 2
     saturation: 1.2
     description:
@@ -752,7 +755,7 @@ food:
           probability: 0.6
 
   BEETROOT:         # 0.9 / 1 = 0.9
-    name: "Beetroot"
+    name:
     restore: 1
     saturation: 0.9
     description:
@@ -776,7 +779,7 @@ food:
           probability: 0.012
 
   CARROT:           # 1.8 / 3 = 0.6
-    name: "Carrot"
+    name:
     restore: 3
     saturation: 1.8
     description:
@@ -793,7 +796,7 @@ food:
           probability: 0.1
   # OTHER
   GOLDEN_CARROT:    # 14.4 / 6 = 2.4
-    name: "Golden Carrot"
+    name:
     restore: 6
     saturation: 14.4
     description:
@@ -804,7 +807,7 @@ food:
     effects:
 
   ROTTEN_FLESH:     # 0.8 / -8 = -0.4
-    name: "Rotten Flesh"
+    name:
     restore: -8
     saturation: 0.8
     description:
@@ -848,3 +851,9 @@ debug-probability: false
 # Sends all config-loading debug prints to the console. Don't touch if not debugging.
 debug-config: false
 
+# Events; determines which events override item descriptions.
+
+click-event: true
+close-event: true
+drag-event: true
+open-event: true

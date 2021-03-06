@@ -22,10 +22,10 @@ public class InvDragHandler implements Listener {
         Player player = (Player)event.getWhoClicked();
         Set<Integer> slots = event.getInventorySlots();
         for (Integer index : slots){
-            ItemDescHandler.setItemDesc(event.getInventory().getItem(index));
+            if (event.getInventory().getItem(index) != null) { ItemDescHandler.setItemDesc(event.getInventory().getItem(index)); }
         }
         for (ItemStack item : player.getInventory().getContents()){
-            ItemDescHandler.setItemDesc(item);
+            if (item != null){ ItemDescHandler.setItemDesc(item); }
         }
     }
 }

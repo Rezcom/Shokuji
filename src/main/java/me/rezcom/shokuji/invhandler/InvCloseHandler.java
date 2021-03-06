@@ -14,7 +14,7 @@ public class InvCloseHandler implements Listener {
     void onPlayerCloseInv(InventoryCloseEvent event){
         if (enabled){
             for (ItemStack item : event.getInventory().getContents()){
-                ItemDescHandler.setItemDesc(item);
+                if (item != null){ ItemDescHandler.setItemDesc(item); }
             }
         }
 

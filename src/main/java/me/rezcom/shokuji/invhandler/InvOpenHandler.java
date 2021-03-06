@@ -17,7 +17,7 @@ public class InvOpenHandler implements Listener {
         if (enabled){
             Player player = event.getPlayer();
             for (ItemStack item : player.getInventory().getContents()){
-                ItemDescHandler.setItemDesc(item);
+                if (item != null){ ItemDescHandler.setItemDesc(item); }
             }
         }
     }

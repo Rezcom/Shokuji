@@ -126,13 +126,13 @@ food:
           amplifier: 0
           probability: 1.0
 
-  COOKED_MUTTON:    # 6.9 / 6 = 1.15    # ON AVERAGE, gives 20.52s of Health Boost I
+  COOKED_MUTTON:    # 6.9 / 6 = 1.15     # ON AVERAGE, gives 45.6s of Health Boost
     name:
     restore: 6
     saturation: 6.9
     description:
-      - "Gives Health Boost for 18s."
-      - "14% chance for double duration."
+      - "Gives Health Boost for 40s."
+      - "0.14% chance for double duration."
     flair:
       - "Eating this luxury makes"
       - "you feel revitalized."
@@ -140,12 +140,12 @@ food:
       muttonBoost:
         shortBoost:
           effect: HEALTH_BOOST
-          duration: 360
+          duration: 800
           amplifier: 0
           probability: 0.86
         longBoost:
           effect: HEALTH_BOOST
-          duration: 720
+          duration: 1600
           amplifier: 0
           probability: 0.14
 
