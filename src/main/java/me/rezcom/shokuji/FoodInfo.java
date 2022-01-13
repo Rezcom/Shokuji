@@ -4,6 +4,10 @@ import me.rezcom.shokuji.invhandler.InvClickHandler;
 import me.rezcom.shokuji.invhandler.InvCloseHandler;
 import me.rezcom.shokuji.invhandler.InvDragHandler;
 import me.rezcom.shokuji.invhandler.InvOpenHandler;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.PotionEffect;
@@ -35,12 +39,11 @@ public class FoodInfo {
     public static FileConfiguration fileConfig;
 
     // Stores all data for edible food and their lore
-
     public static Map<Material,EdibleItem> foodMap = new HashMap<>();
 
 
     // Stores the lore to be displayed for "ingredient" items.
-    public static Map<Material, List<String>> ingredientLoreMap = new HashMap<>();
+    public static Map<Material, List<Component>> ingredientLoreMap = new HashMap<>();
 
     // Returns true if the material is present in ALL maps corresponding to edible materials
     /*public static boolean edibleMapsContain(ItemStack foodItem){
@@ -163,7 +166,7 @@ public class FoodInfo {
             }
 
             Main.sendDebugMessage("CONFIG: Effects initialized.",debugConfig);
-            List<String> newLore = buildEdibleLore(restore,sat,desc,flair);
+            List<Component> newLore = buildEdibleLore(restore,sat,desc,flair);
             Main.sendDebugMessage("CONFIG: Lore initialized.",debugConfig);
 
             foodMap.put(curFoodMaterial, new EdibleItem(curFoodMaterial,hasName, name,restore,sat,effects,newLore));
@@ -173,33 +176,34 @@ public class FoodInfo {
     }
 
     // Builds the description for the edible food item.
-    private static List<String> buildEdibleLore(int restore, float sat, List<String> desc, List<String> flair){
+    private static List<Component> buildEdibleLore(int restore, float sat, List<String> desc, List<String> flair){
 
-        List<String> lore = new ArrayList<>();
+        ArrayList<Component> lore = new ArrayList<>();
         if (restore >= 0){
-            lore.add("§aRestores " + restore + " Hunger");
+            lore.add(Component.text("Restores " + restore + " Hunger").color(TextColor.color(0x55FF55)));
         } else {
-            lore.add("§cDepletes " + java.lang.Math.abs(restore) + " Hunger");
+            lore.add(Component.text("Depletes " + java.lang.Math.abs(restore) + " Hunger").color(TextColor.color(0xFF5555)));
         }
 
         // Saturation and Nourishment Value
         BigDecimal bd = BigDecimal.valueOf(sat / restore);
         bd = bd.round(new MathContext(3));
-        lore.add("§bSaturation: " + sat + " §9(" + bd.doubleValue() + " Nourishment)");
+        lore.add(Component.text("Saturation: " + sat + " ").color(TextColor.color(0x55FFFF))
+                .append(Component.text("(" + bd.doubleValue() + " Nourishment)").color(TextColor.color(0x5555FF))));
 
         // Description of Effects
         if (desc != null){
-            lore.add("\n");
+            lore.add(Component.text(" "));
             for (String s : desc){
-                lore.add("§e" + s);
+                lore.add(Component.text(s).color(TextColor.color(0xFFFF55)));
             }
         }
 
         // Flair
         if (flair != null){
-            lore.add("\n");
+            lore.add(Component.text(" "));
             for (String s : flair){
-                lore.add("§3§o" + s);
+                lore.add(Component.text(s).color(TextColor.color(0x00AAAA)).decoration(TextDecoration.ITALIC,true));
             }
         }
         return lore;
@@ -210,12 +214,12 @@ public class FoodInfo {
     private static void setIngredientLoreMap(Material material, List<String> desc){
         //if (edibleLoreMap.containsKey(material)){ return; }
 
-        List<String> lore = new ArrayList<>();
-        lore.add("§eIngredient\n");
-
+        List<Component> lore = new ArrayList<>();
+        lore.add(Component.text("Ingredient").color(TextColor.color(0xFCE803)));
+        lore.add(Component.text(" "));
         if (desc != null){
             for (String s : desc){
-                lore.add("§3§o" + s);
+                lore.add(Component.text(s).color(TextColor.color(0x338AF5)).decoration(TextDecoration.ITALIC,true));
             }
         }
 

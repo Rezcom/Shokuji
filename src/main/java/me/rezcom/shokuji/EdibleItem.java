@@ -1,5 +1,6 @@
 package me.rezcom.shokuji;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -12,9 +13,9 @@ public class EdibleItem {
     int restore;
     float saturation;
     List<PotionProbList> effects;
-    List<String> lore;
+    List<Component> lore;
 
-    EdibleItem(Material m, boolean hn, String n, int r, float s, List<PotionProbList> eff, List<String> l){
+    EdibleItem(Material m, boolean hn, String n, int r, float s, List<PotionProbList> eff, List<Component> l){
         material = m;
         hasName = hn;
         name = n;
@@ -28,7 +29,7 @@ public class EdibleItem {
     public int getRestore(){ return this.restore; }
     public float getSaturation(){ return this.saturation; }
     public List<PotionProbList> getEffects(){ return this.effects; }
-    public List<String> getLore(){ return this.lore; }
+    public List<Component> getLore(){ return this.lore; }
 
 
 }

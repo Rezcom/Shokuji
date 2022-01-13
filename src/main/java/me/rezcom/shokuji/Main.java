@@ -10,11 +10,18 @@ import me.rezcom.shokuji.invhandler.InvDragHandler;
 import me.rezcom.shokuji.invhandler.InvOpenHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public final class Main extends JavaPlugin {
+
+    public static Logger logger;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        logger = this.getLogger();
+        logger.log(Level.INFO, "Initializing Plugin");
 
         this.saveDefaultConfig();
         FoodInfo.fileConfig = this.getConfig(); // Pass config to food so it can build descriptions.
@@ -49,7 +56,7 @@ public final class Main extends JavaPlugin {
 
     public static void sendDebugMessage(String string, boolean send){
         if (send){
-            System.out.println("[Shokuji] " + string);
+            logger.log(Level.INFO, string);
         }
     }
 }
