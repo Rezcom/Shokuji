@@ -1,5 +1,8 @@
-package me.rezcom.shokuji;
+package me.rezcom.shokuji.events;
 
+import me.rezcom.shokuji.EdibleItem;
+import me.rezcom.shokuji.FoodInfo;
+import me.rezcom.shokuji.PotionProbList;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

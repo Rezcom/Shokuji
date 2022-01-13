@@ -818,3 +818,6 @@ debug-probability: false
 
 # Sends all config-loading debug prints to the console. Don't touch if not debugging.
 debug-config: false
+
+# Enable Inventory Events
+inv-event: true

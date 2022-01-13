@@ -1,4 +1,4 @@
-package me.rezcom.shokuji;
+package me.rezcom.shokuji.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

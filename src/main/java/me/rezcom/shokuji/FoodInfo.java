@@ -1,11 +1,7 @@
 package me.rezcom.shokuji;
 
-import me.rezcom.shokuji.invhandler.InvClickHandler;
-import me.rezcom.shokuji.invhandler.InvCloseHandler;
-import me.rezcom.shokuji.invhandler.InvDragHandler;
-import me.rezcom.shokuji.invhandler.InvOpenHandler;
+import me.rezcom.shokuji.events.InvEventHandler;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
@@ -16,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.*;
+import java.util.logging.Level;
 
 
 /*
@@ -59,24 +56,26 @@ public class FoodInfo {
         try {
             initializeEdibleConfig(); // Set the maps for edible items.
         } catch (NullPointerException e){
-            System.out.println("[Shokuji] Could not initialize 'food' section from config file. Please review it, or delete and restart for a fresh new default one.");
+            Main.logger.log(Level.SEVERE, "Could not initialize 'food' section from config file. Please review it, or delete and restart for a fresh new default one.");
         }
 
         try {
             initializeIngredientConfig(); // Set the maps for 'ingredient' items.
         } catch (NullPointerException e){
-            System.out.println("[Shokuji] Could not initialize 'ingredients' section from config file. Please review it, or delete and restart for a fresh new default one.");
+            Main.logger.log(Level.SEVERE, "Could not initialize 'ingredients' section from config file. Please review it, or delete and restart for a fresh new default one.");
         }
 
-        initializeEventConfig();
+        try {
+            initializeEventConfig();
+        } catch (NullPointerException e){
+            Main.logger.log(Level.SEVERE, "Could not initialize inventory event handlers. Ensure that inv-event: true or inv-event: false is listed in the config, or delete and restart for a fresh new default one.");
+        }
+
 
     }
 
     private static void initializeEventConfig(){
-        InvClickHandler.enabled = fileConfig.getBoolean("click-event");
-        InvCloseHandler.enabled = fileConfig.getBoolean("close-event");
-        InvDragHandler.enabled = fileConfig.getBoolean("drag-event");
-        InvOpenHandler.enabled = fileConfig.getBoolean("open-event");
+        InvEventHandler.enabled = fileConfig.getBoolean("inv-event");
     }
 
     private static void initializeIngredientConfig(){
@@ -180,22 +179,22 @@ public class FoodInfo {
 
         ArrayList<Component> lore = new ArrayList<>();
         if (restore >= 0){
-            lore.add(Component.text("Restores " + restore + " Hunger").color(TextColor.color(0x55FF55)));
+            lore.add(Component.text("Restores " + restore + " Hunger").color(TextColor.color(0x55FF55)).decoration(TextDecoration.ITALIC,false));
         } else {
-            lore.add(Component.text("Depletes " + java.lang.Math.abs(restore) + " Hunger").color(TextColor.color(0xFF5555)));
+            lore.add(Component.text("Depletes " + java.lang.Math.abs(restore) + " Hunger").color(TextColor.color(0xFF5555)).decoration(TextDecoration.ITALIC,false));
         }
 
         // Saturation and Nourishment Value
         BigDecimal bd = BigDecimal.valueOf(sat / restore);
         bd = bd.round(new MathContext(3));
-        lore.add(Component.text("Saturation: " + sat + " ").color(TextColor.color(0x55FFFF))
-                .append(Component.text("(" + bd.doubleValue() + " Nourishment)").color(TextColor.color(0x5555FF))));
+        lore.add(Component.text("Saturation: " + sat + " ").color(TextColor.color(0x55FFFF)).decoration(TextDecoration.ITALIC,false)
+                .append(Component.text("(" + bd.doubleValue() + " Nourishment)").color(TextColor.color(0x5555FF))).decoration(TextDecoration.ITALIC,false));
 
         // Description of Effects
         if (desc != null){
             lore.add(Component.text(" "));
             for (String s : desc){
-                lore.add(Component.text(s).color(TextColor.color(0xFFFF55)));
+                lore.add(Component.text(s).color(TextColor.color(0xFFFF55)).decoration(TextDecoration.ITALIC,false));
             }
         }
 
@@ -215,7 +214,7 @@ public class FoodInfo {
         //if (edibleLoreMap.containsKey(material)){ return; }
 
         List<Component> lore = new ArrayList<>();
-        lore.add(Component.text("Ingredient").color(TextColor.color(0xFCE803)));
+        lore.add(Component.text("Ingredient").color(TextColor.color(0xFCE803)).decoration(TextDecoration.ITALIC,false));
         lore.add(Component.text(" "));
         if (desc != null){
             for (String s : desc){

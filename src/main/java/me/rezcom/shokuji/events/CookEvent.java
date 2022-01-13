@@ -1,5 +1,6 @@
-package me.rezcom.shokuji;
+package me.rezcom.shokuji.events;
 
+import me.rezcom.shokuji.ItemDescHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockCookEvent;

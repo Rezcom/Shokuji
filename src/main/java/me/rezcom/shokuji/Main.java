@@ -4,10 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
-import me.rezcom.shokuji.invhandler.InvClickHandler;
-import me.rezcom.shokuji.invhandler.InvCloseHandler;
-import me.rezcom.shokuji.invhandler.InvDragHandler;
-import me.rezcom.shokuji.invhandler.InvOpenHandler;
+import me.rezcom.shokuji.events.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -37,14 +34,14 @@ public final class Main extends JavaPlugin {
         protocolManager.addPacketListener(new ItemDescHandler(this, ListenerPriority.NORMAL, PacketType.Play.Server.SET_SLOT));
         //protocolManager.addPacketListener(new AntiSprintPacket(this, ListenerPriority.NORMAL, PacketType.Play.Client.ENTITY_ACTION));
 
+        // Register Events
 
-        getServer().getPluginManager().registerEvents(new EatEvent(),this);
         getServer().getPluginManager().registerEvents(new AntiSprintEvent(),this);
+        getServer().getPluginManager().registerEvents(new CookEvent(),this);
+        getServer().getPluginManager().registerEvents(new DeathEvent(),this);
+        getServer().getPluginManager().registerEvents(new EatEvent(),this);
+        getServer().getPluginManager().registerEvents(new InvEventHandler(),this);
 
-        // Inv Handlers
-        getServer().getPluginManager().registerEvents(new InvOpenHandler(),this);
-        getServer().getPluginManager().registerEvents(new InvDragHandler(),this);
-        getServer().getPluginManager().registerEvents(new InvClickHandler(),this);
     }
 
     @Override
