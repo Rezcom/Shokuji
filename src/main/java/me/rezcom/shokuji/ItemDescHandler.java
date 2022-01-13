@@ -31,7 +31,7 @@ public class ItemDescHandler extends PacketAdapter {
     // Sets a specific item's tags to the appropriate tags.
     public static void setItemDesc(ItemStack item){
         if (item == null){
-            Main.logger.log(Level.WARNING, "Tried to set Item Description of a null itemStack");
+            //Main.logger.log(Level.WARNING, "Tried to set Item Description of a null itemStack");
             return;
         }
 
