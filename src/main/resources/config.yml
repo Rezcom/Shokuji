@@ -182,8 +182,8 @@ food:
     restore: 5
     saturation: 6
     description:
-      - "Gives Speed for 25s."
-      - "40% chance for Jump Boost 25s."
+      - "Gives Speed for 13s."
+      - "40% chance for Jump Boost 13s."
     flair:
       - "It's just as delicious"
       - "as it was cute."
@@ -191,13 +191,13 @@ food:
       rabbitSpeed:
         giveSpeed:
           effect: SPEED
-          duration: 500
+          duration: 260
           amplifier: 0
           probability: 1.0
       rabbitJump:
         giveJump:
           effect: JUMP
-          duration: 500
+          duration: 260
           amplifier: 0
           probability: 0.4
 
@@ -216,7 +216,7 @@ food:
       rabStewSpeed:
         giveSpeed:
           effect: SPEED
-          duration: 700
+          duration: 500
           amplifier: 1
           probability: 1.0
       rabStewJump:
@@ -286,11 +286,11 @@ food:
           amplifier: 0
           probability: 1.0
 
-  BAKED_POTATO:     # 8.8 / 5 = 1.76
-    restore: 5
-    saturation: 8.8
+  BAKED_POTATO:     # 6.8 / 4 = 1.7
+    restore: 4
+    saturation: 6.8
     description:
-      - "Gives Absorption for 25s."
+      - "Gives Absorption for 10s."
       - "10% chance for Bonus Absorption."
     flair:
       - "Nothing's heartier than baked"
@@ -299,19 +299,19 @@ food:
       bakedAbs:
         smallAbs:
           effect: ABSORPTION
-          duration: 500
+          duration: 200
           amplifier: 0
           probability: 0.9
         bigAbs:
           effect: ABSORPTION
-          duration: 500
+          duration: 200
           amplifier: 1
           probability: 0.1
   BEETROOT_SOUP:    # 6.5 / 6 = 1.0833
     restore: 6
     saturation: 6.5
     description:
-      - "Grants Strength for 27s."
+      - "Grants Strength for 18s."
       - "12% chance for Regeneration II 9.5s."
     flair:
       - "One of the healthiest foods out there."
@@ -320,7 +320,7 @@ food:
       beetrootStr:
         giveStr:
           effect: INCREASE_DAMAGE
-          duration: 540
+          duration: 360
           amplifier: 0
           probability: 1.0
       beetrootRegen:
@@ -715,7 +715,7 @@ food:
     restore: 1
     saturation: 0.9
     description:
-      - "10% chance for Strength 18s."
+      - "10% chance for Strength 10s."
       - "1.2% chance for Regeneration 9.5s."
     flair:
       - "A common vegetable enjoyed"
@@ -724,7 +724,7 @@ food:
       beetStr:
         giveStr:
           effect: INCREASE_DAMAGE
-          duration: 360
+          duration: 200
           amplifier: 0
           probability: 0.1
       beetRegen:

@@ -1,6 +1,7 @@
 package me.rezcom.shokuji.events;
 
 import me.rezcom.shokuji.ItemDescHandler;
+import me.rezcom.shokuji.Main;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 public class InvEventHandler implements Listener {
 
@@ -58,9 +60,14 @@ public class InvEventHandler implements Listener {
         Player player = (Player)event.getWhoClicked();
         Set<Integer> slots = event.getInventorySlots();
         for (Integer index : slots){
-            if (event.getInventory().getItem(index) != null) {
-                ItemDescHandler.setItemDesc(event.getInventory().getItem(index));
+            try {
+                if (event.getInventory().getItem(index) != null) {
+                    ItemDescHandler.setItemDesc(event.getInventory().getItem(index));
+                }
+            } catch (ArrayIndexOutOfBoundsException e){
+                Main.logger.log(Level.WARNING,"Inventory Event was out of bounds, someone dragged something weird.");
             }
+
         }
         for (ItemStack item : player.getInventory().getContents()){
             if (item != null){
